@@ -29,6 +29,7 @@ import org.json.JSONObject;
 public class MainActivity extends AppCompatActivity {
 
     WebView mWebView;
+    String main_page_url = "http://breathism.com/";
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
         mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.getSettings().setLoadWithOverviewMode(true);
-        mWebView.loadUrl("http://breathism.com");
+        mWebView.loadUrl(main_page_url);
 
         mWebView.setWebViewClient(new sumWebViewClient());
 
@@ -104,12 +105,29 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onKeyDown(int keyCode,KeyEvent event){
-        if((keyCode == KeyEvent.KEYCODE_BACK) && mWebView.canGoBack()) {
-            mWebView.goBack();
+        if(keyCode == KeyEvent.KEYCODE_BACK) {
+
+            if(mWebView.canGoBack()){
+                if(mWebView.getOriginalUrl().equalsIgnoreCase(main_page_url) || mWebView.getOriginalUrl().equalsIgnoreCase(main_page_url+"index.php")){
+                    android.os.Process.killProcess(android.os.Process.myPid());
+                }else{
+                    mWebView.goBack();
+                }
+
+            }else if(!mWebView.getOriginalUrl().equalsIgnoreCase(main_page_url) && !mWebView.getOriginalUrl().equalsIgnoreCase(main_page_url+"index.php")){
+                mWebView.loadUrl(main_page_url);
+            }else{
+                android.os.Process.killProcess(android.os.Process.myPid());
+            }
+
             return true;
+
         }
+
+
         return super.onKeyDown(keyCode, event);
     }
+
 
 
     private class sumWebViewClient extends WebViewClient {
@@ -223,6 +241,7 @@ public class MainActivity extends AppCompatActivity {
             else if (intent.hasExtra(PushManager.REGISTER_EVENT))
             {
                 showMessage("개발자용 메세지 : register");
+
             }
             else if (intent.hasExtra(PushManager.UNREGISTER_EVENT))
             {
