@@ -62,7 +62,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/btn_katalk"
-            android:src="@mipmap/katalk_icon"
+            android:src="@mipmap/katalk_icon_white"
             android:background="#00ffffff"
             android:adjustViewBounds="false"
             android:layout_weight="1"

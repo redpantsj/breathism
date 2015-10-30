@@ -1,20 +1,26 @@
 package com.example.sangjo_real.sum_test_1;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.pushwoosh.PushManager;
@@ -30,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
 
     WebView mWebView;
     String main_page_url = "http://breathism.com/";
+    ProgressDialog mProgress;
+    final Activity activity = this;
+    private BackPressCloseHandler backPressCloseHandler;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -37,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+        backPressCloseHandler = new BackPressCloseHandler(this);
 
         startActivity(new Intent(this, splash.class));
 
@@ -73,10 +83,80 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+        /**
+         * 하단 버튼을 여기서 처리
+         */
+
+
+        ImageButton gotohome = (ImageButton)findViewById(R.id.btn_home);
+        gotohome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("OnClick", "gotohome");
+                mWebView.loadUrl(main_page_url);
+
+            }
+        });
+
+        ImageButton gotoback = (ImageButton)findViewById(R.id.btn_back);
+        gotoback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("OnClick", "gotoback");
+                if (mWebView.canGoBack())
+                    mWebView.goBack();
+
+            }
+        });
+
+        ImageButton gorefresh = (ImageButton)findViewById(R.id.btn_refresh);
+        gorefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("OnClick", "gorefresh");
+                mWebView.reload();
+
+            }
+        });
+
+        ImageButton goforward = (ImageButton)findViewById(R.id.btn_forward);
+        goforward.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("OnClick", "goforward");
+                if (mWebView.canGoForward())
+                    mWebView.goForward();
+
+            }
+        });
+
+        ImageButton gokatalk = (ImageButton)findViewById(R.id.btn_katalk);
+        gokatalk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("OnClick", "gokatalk");
+                Intent intentSubActivity = new Intent(Intent.ACTION_VIEW, Uri.parse("http://plus.kakao.com/home/jyucfr3o"));
+
+                startActivity(intentSubActivity);
+
+            }
+        });
 
 
 
 
+
+
+
+
+
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        backPressCloseHandler.onBackPressed();
     }
 
     @Override
@@ -109,7 +189,9 @@ public class MainActivity extends AppCompatActivity {
 
             if(mWebView.canGoBack()){
                 if(mWebView.getOriginalUrl().equalsIgnoreCase(main_page_url) || mWebView.getOriginalUrl().equalsIgnoreCase(main_page_url+"index.php")){
-                    android.os.Process.killProcess(android.os.Process.myPid());
+                    onBackPressed();
+
+                    //android.os.Process.killProcess(android.os.Process.myPid());
                 }else{
                     mWebView.goBack();
                 }
@@ -117,7 +199,9 @@ public class MainActivity extends AppCompatActivity {
             }else if(!mWebView.getOriginalUrl().equalsIgnoreCase(main_page_url) && !mWebView.getOriginalUrl().equalsIgnoreCase(main_page_url+"index.php")){
                 mWebView.loadUrl(main_page_url);
             }else{
-                android.os.Process.killProcess(android.os.Process.myPid());
+
+                onBackPressed();
+                //android.os.Process.killProcess(android.os.Process.myPid());
             }
 
             return true;
@@ -149,6 +233,49 @@ public class MainActivity extends AppCompatActivity {
 
             return true;
         }
+
+
+        /**
+         * 웹페이지 로딩이 시작할 때 처리
+         */
+        @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            if (mProgress == null) {
+                mProgress = new ProgressDialog(activity);
+                mProgress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                mProgress.setTitle("Loading...");
+                mProgress.setMessage("Please wait for few second...");
+                mProgress.setCancelable(false);
+
+                mProgress.show();
+            }
+        }
+
+        /**
+         * 웹페이지 로딩중 에러가 발생했을때 처리
+         */
+        @Override
+        public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+            Toast.makeText(activity, "Loading Error" + description, Toast.LENGTH_SHORT).show();
+
+            if (mProgress.isShowing()) {
+                mProgress.dismiss();
+            }
+        }
+
+        /**
+         * 웹페이지 로딩이 끝났을 때 처리
+         */
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            if (mProgress.isShowing()) {
+                mProgress.dismiss();
+            }
+        }
+
+
+
+
     }
 
 
