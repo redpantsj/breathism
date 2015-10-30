@@ -1,4 +1,4 @@
-package com.example.sangjo_real.sum_test_1;
+package com.breathism.app.webview;
 
 import android.app.Activity;
 import android.widget.Toast;

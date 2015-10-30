@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.sangjo_real.sum_test_1" >
+    package="com.breathism.app.webview" >
 
 
 
@@ -25,7 +25,7 @@
            where PACKAGE is the application's package name.
     -->
     <permission
-        android:name="com.example.sangjo_real.sum_test_1.permission.C2D_MESSAGE"
+        android:name="com.breathism.app.webview.permission.C2D_MESSAGE"
         android:protectionLevel="signature"/>
     <uses-permission
         android:name="com.example.sangjo_real.sum_test_1.permission.C2D_MESSAGE"/>
@@ -87,7 +87,7 @@
 
 
         <activity
-            android:name=".MainActivity"
+            android:name="com.breathism.app.webview.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -96,7 +96,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".splash"
+            android:name="com.breathism.app.webview.splash"
             android:label="@string/title_activity_splash" >
         </activity>
     </application>

@@ -1,11 +1,8 @@
-package com.example.sangjo_real.sum_test_1;
+package com.breathism.app.webview;
 
 import android.app.Activity;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 
 public class splash extends Activity {
 

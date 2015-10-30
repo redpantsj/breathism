@@ -1,11 +1,10 @@
-package com.example.sangjo_real.sum_test_1;
+package com.breathism.app.webview;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
@@ -24,8 +23,6 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.pushwoosh.PushManager;
-import com.pushwoosh.PushManager.GetTagsListener;
-import com.pushwoosh.PushManager.RichPageListener;
 import com.pushwoosh.BasePushMessageReceiver;
 import com.pushwoosh.BaseRegistrationReceiver;
 
