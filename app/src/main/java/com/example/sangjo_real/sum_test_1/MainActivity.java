@@ -299,7 +299,8 @@ public class MainActivity extends AppCompatActivity {
         protected void onMessageReceive(Intent intent)
         {
             //JSON_DATA_KEY contains JSON payload of push notification.
-            showMessage("개발자용 : push message is " + intent.getExtras().getString(JSON_DATA_KEY));
+            //showMessage("개발자용 : push message is " + intent.getExtras().getString(JSON_DATA_KEY));
+            showMessage("메세지를 수신했습니다");
         }
     };
 
@@ -367,7 +368,8 @@ public class MainActivity extends AppCompatActivity {
             }
             else if (intent.hasExtra(PushManager.REGISTER_EVENT))
             {
-                showMessage("개발자용 메세지 : register");
+                //showMessage("개발자용 메세지 : register");
+                showMessage("푸시알람을 수신합니다");
 
             }
             else if (intent.hasExtra(PushManager.UNREGISTER_EVENT))
