@@ -224,6 +224,10 @@ public class MainActivity extends AppCompatActivity {
 
 
             }
+            else if (url.startsWith("http://plus.kakao.com/home/jyucfr3o")) {
+                Intent intentSubActivity = new Intent(Intent.ACTION_VIEW, Uri.parse("http://plus.kakao.com/home/jyucfr3o"));
+                startActivity(intentSubActivity);
+            }
             else {
                 view.loadUrl(url);
             }
